@@ -1,33 +1,22 @@
 class Solution:
-    def calculate(self, s):
-
-        queue_number = []
-        currect_number = 0
-        operation = 1
-        register = 0
-
+    def firstUniqChar(self, s):
+        
+        hasttable_tmp = {}
         for i in s:
-            if i.isdigit():
-                currect_number = currect_number * 10 + int(i)
-            elif i == '+' or i == '-':
-                register = register + currect_number * operation
-                currect_number = 0
-                operation = 1 if i == "+" else -1
-            elif i == '(':
-                queue_number.append(register)
-                queue_number.append(operation)
-                register = 0
-                operation = 1
-            elif i == ')':
-                register = register + currect_number * operation
-                currect_number = 0
-                register = register * queue_number.pop()
-                register = register - queue_number.pop()
-                print(queue_number)
-        register = register + currect_number * operation
-        return register
+            if i not in hasttable_tmp:
+                hasttable_tmp[i] = 1
+            else:
+                hasttable_tmp[i] += 1
 
-s = "(1+(4+5+2)-3)+(6+8)"
+        min_count = hasttable_tmp[s[0]]
+        Record_Position = 0
+        for i in range(len(s)):
+            if hasttable_tmp[s[i]] < min_count:
+                min_count = hasttable_tmp[s[i]]
+                Record_Position = i
+        print(s[i])
+        
+s = "aabb"
 
 test_solution = Solution()
-test_solution.calculate(s)
+test_solution.firstUniqChar(s)

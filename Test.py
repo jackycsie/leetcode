@@ -1,22 +1,25 @@
-class Solution:
-    def firstUniqChar(self, s):
+class Solution(object):
+    def myAtoi(self, s):
         
-        hasttable_tmp = {}
-        for i in s:
-            if i not in hasttable_tmp:
-                hasttable_tmp[i] = 1
+        MIN, MAX = -2 ** 31, 2 ** 31 - 1
+        n, empty, sign = 0, True, 1  # empty denotes we have not seen any number, sign is -1 or 1
+        for c in s:
+            if empty:
+                if c == ' ': continue  # ignore the leading whitespace
+                elif c == '-': sign = -1  # final answer is a negative number
+                elif c.isdigit(): n = int(c)  # the first digit of number
+                elif c != '+': return 0  # the first char is not a digit and not in (' ', '+', '-'), so s is invalid
+                empty = False  # the first char is a digit or '+' or '-', valid number starts
             else:
-                hasttable_tmp[i] += 1
+                if c.isdigit():
+                    n = n * 10 + int(c)
+                    if sign * n > MAX: return MAX
+                    elif sign * n < MIN: return MIN
+                else: break   # end of valid number
+        return sign * n  # sign is 1 or -1 
 
-        min_count = hasttable_tmp[s[0]]
-        Record_Position = 0
-        for i in range(len(s)):
-            if hasttable_tmp[s[i]] < min_count:
-                min_count = hasttable_tmp[s[i]]
-                Record_Position = i
-        print(s[i])
-        
-s = "aabb"
-
+# s = "  -0012a42"
+# s = "00000-42a1234"
+s = "   +0 123"
 test_solution = Solution()
-test_solution.firstUniqChar(s)
+test_solution.myAtoi(s)
